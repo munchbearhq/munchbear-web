@@ -2,6 +2,15 @@
 	import { version } from '../../package.json';
 </script>
 
+<svelte:head>
+	<title>MunchBear — Community Catalog for Food & Beverages</title>
+
+	<meta
+		name="description"
+		content="Discover, explore, and contribute to a community-driven catalog of food and beverages."
+	/>
+</svelte:head>
+
 <div class="flex min-h-screen flex-col px-6 pt-6">
 	<div class="prose flex-1">
 		<h1 class="mb-0">
