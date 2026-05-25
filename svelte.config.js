@@ -20,7 +20,10 @@ const config = {
 			fallback: '404.html',
 			precompress: false,
 			strict: true
-		})
+		}),
+		alias: {
+			'@/*': './src/lib/*'
+		}
 	}
 };
 
