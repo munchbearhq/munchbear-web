@@ -1,3 +1,4 @@
 # allow crawling everything by default
 User-agent: *
-Disallow:
+Disallow: /
+# todo: Remove / after we get stable and serves on munchbear.com
