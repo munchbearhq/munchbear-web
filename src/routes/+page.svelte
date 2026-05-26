@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { version } from '../../package.json';
+	import HeroSection from '$lib/components/home/HeroSection.svelte';
 </script>
 
 <svelte:head>
@@ -11,8 +12,8 @@
 	/>
 </svelte:head>
 
-<div class="flex min-h-screen flex-col px-6 pt-6">
-	<div class="prose flex-1">
+<div class="flex min-h-screen flex-col">
+	<div class="prose px-6 pt-6">
 		<h1 class="mb-0">
 			Welcome to
 			<span class="text-[#4f46e5]"> MunchBear </span>
@@ -20,7 +21,11 @@
 		<p class="mt-0">The community-driven food and beverage catalog.</p>
 	</div>
 
-	<footer class="flex flex-col gap-1 py-6 text-xs text-muted-foreground">
+	<main class="flex-1">
+		<HeroSection />
+	</main>
+
+	<footer class="flex flex-col gap-1 px-6 py-6 text-xs text-muted-foreground">
 		<p>Made with Coffee and Love.</p>
 		<div class="font-mono text-[10px]">
 			<a
