@@ -17,10 +17,7 @@
 			Welcome to
 			<span class="text-[#4f46e5]"> MunchBear </span>
 		</h1>
-		<p class="mt-0">
-			Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation for
-			SvelteKit.
-		</p>
+		<p class="mt-0">The community-driven food and beverage catalog.</p>
 	</div>
 
 	<footer class="flex flex-col gap-1 py-6 text-xs text-muted-foreground">
