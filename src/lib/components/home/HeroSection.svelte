@@ -1,7 +1,10 @@
 <script lang="ts">
-	import { Search, Heart, Star, Bookmark } from '@lucide/svelte';
+	import { Search, Sparkles, Star, Bookmark } from '@lucide/svelte';
+	import { foodFacts } from '$lib/data/facts';
 
 	const quickSearches = ['Matcha', 'Ramen', 'Croissant', 'Sushi', 'Tiramisu', 'Cold Brew'];
+
+	let fact = $state(foodFacts[Math.floor(Math.random() * foodFacts.length)]);
 </script>
 
 <section class="relative overflow-hidden px-6 py-10 lg:px-10 lg:py-16">
@@ -12,8 +15,8 @@
 				<div
 					class="mb-8 inline-flex w-fit items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm shadow-sm"
 				>
-					<Heart size={14} class="fill-violet-500 text-violet-500" />
-					<span class="text-zinc-700"> Loved by food lovers worldwide </span>
+					<Sparkles size={14} class="fill-violet-500 text-violet-500" />
+					<span class="text-zinc-700"> {fact.text} </span>
 				</div>
 
 				<h1

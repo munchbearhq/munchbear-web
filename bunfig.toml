@@ -1,0 +1,4 @@
+[install]
+# Prevent installing or updating to packages published within the last 24 hours.
+# This helps mitigate supply chain attacks by allowing time for malicious releases to be detected.
+minimumReleaseAge = 86400
