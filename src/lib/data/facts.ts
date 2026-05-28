@@ -37,3 +37,16 @@ export const foodFacts = [
 	{ text: 'Broccoli is actually a cluster of unopened flower buds' },
 	{ text: 'The red food dye in many snacks comes from crushed bugs' }
 ];
+
+export const heroWords = [
+	'obsessing over',
+	'savoring',
+	'craving',
+	'dreaming of',
+	'celebrating',
+	'sharing',
+	'exploring',
+	'traveling for',
+	'waiting for',
+	'searching for'
+];

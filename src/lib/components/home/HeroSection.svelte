@@ -1,12 +1,14 @@
 <script lang="ts">
 	import { Search, Sparkles, Star, Bookmark } from '@lucide/svelte';
-	import { foodFacts } from '$lib/data/facts';
+	import { foodFacts, heroWords } from '$lib/data/facts';
 	import { onMount } from 'svelte';
+	import { fly } from 'svelte/transition';
 
 	const quickSearches = ['Matcha', 'Ramen', 'Croissant', 'Sushi', 'Tiramisu', 'Cold Brew'];
 
 	let fact = $state(foodFacts[0]);
 	let displayedChars = $state<string[]>([]);
+	let wordIndex = $state(0);
 
 	onMount(() => {
 		const selectedFact = foodFacts[Math.floor(Math.random() * foodFacts.length)];
@@ -14,16 +16,23 @@
 
 		const chars = selectedFact.text.split('');
 		let i = 0;
-		const interval = setInterval(() => {
+		const factInterval = setInterval(() => {
 			if (i < chars.length) {
 				displayedChars = [...displayedChars, chars[i]];
 				i++;
 			} else {
-				clearInterval(interval);
+				clearInterval(factInterval);
 			}
 		}, 30);
 
-		return () => clearInterval(interval);
+		const wordInterval = setInterval(() => {
+			wordIndex = (wordIndex + 1) % heroWords.length;
+		}, 2500);
+
+		return () => {
+			clearInterval(factInterval);
+			clearInterval(wordInterval);
+		};
 	});
 </script>
 
@@ -57,7 +66,17 @@
 
 					worth
 
-					<span class="text-violet-600 italic"> obsessing over </span>
+					<span class="ml-[-0.056rem] inline-grid text-violet-600 italic">
+						{#key wordIndex}
+							<span
+								class="col-start-1 row-start-1"
+								in:fly={{ y: 20, duration: 400, delay: 100 }}
+								out:fly={{ y: -20, duration: 400 }}
+							>
+								{heroWords[wordIndex]}
+							</span>
+						{/key}
+					</span>
 				</h1>
 
 				<p class="mt-6 max-w-xl text-lg leading-8 text-zinc-600">
