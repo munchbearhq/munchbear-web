@@ -1,10 +1,17 @@
 <script lang="ts">
 	import { Search, Sparkles, Star, Bookmark } from '@lucide/svelte';
 	import { foodFacts } from '$lib/data/facts';
+	import { onMount } from 'svelte';
 
 	const quickSearches = ['Matcha', 'Ramen', 'Croissant', 'Sushi', 'Tiramisu', 'Cold Brew'];
 
-	let fact = $state(foodFacts[Math.floor(Math.random() * foodFacts.length)]);
+	let fact = $state(foodFacts[0]);
+	let mounted = $state(false);
+
+	onMount(() => {
+		fact = foodFacts[Math.floor(Math.random() * foodFacts.length)];
+		mounted = true;
+	});
 </script>
 
 <section class="relative overflow-hidden px-6 py-10 lg:px-10 lg:py-16">
@@ -13,7 +20,9 @@
 			<!-- LEFT -->
 			<div class="flex flex-col justify-center">
 				<div
-					class="mb-8 inline-flex w-fit items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm shadow-sm"
+					class="mb-8 inline-flex w-fit items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm shadow-sm transition-opacity duration-300"
+					class:opacity-0={!mounted}
+					class:opacity-100={mounted}
 				>
 					<Sparkles size={14} class="fill-violet-500 text-violet-500" />
 					<span class="text-zinc-700"> {fact.text} </span>
