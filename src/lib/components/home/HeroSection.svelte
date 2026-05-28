@@ -2,6 +2,7 @@
 	import { Search, Sparkles, Star, Bookmark } from '@lucide/svelte';
 	import { foodFacts } from '$lib/data/facts';
 	import { onMount } from 'svelte';
+	import { slide, fade } from 'svelte/transition';
 
 	const quickSearches = ['Matcha', 'Ramen', 'Croissant', 'Sushi', 'Tiramisu', 'Cold Brew'];
 
@@ -20,12 +21,16 @@
 			<!-- LEFT -->
 			<div class="flex flex-col justify-center">
 				<div
-					class="mb-8 inline-flex w-fit items-center gap-2 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm shadow-sm transition-opacity duration-300"
-					class:opacity-0={!mounted}
-					class:opacity-100={mounted}
+					class="mb-8 inline-flex h-9 w-fit items-center gap-2 overflow-hidden rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm shadow-sm"
 				>
-					<Sparkles size={14} class="fill-violet-500 text-violet-500" />
-					<span class="text-zinc-700"> {fact.text} </span>
+					<Sparkles size={14} class="shrink-0 fill-violet-500 text-violet-500" />
+					{#if mounted}
+						<div in:slide={{ axis: 'x', duration: 800 }} class="overflow-hidden">
+							<span in:fade={{ duration: 400 }} class="whitespace-nowrap text-zinc-700">
+								{fact.text}
+							</span>
+						</div>
+					{/if}
 				</div>
 
 				<h1
