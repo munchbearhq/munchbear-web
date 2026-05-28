@@ -2,16 +2,28 @@
 	import { Search, Sparkles, Star, Bookmark } from '@lucide/svelte';
 	import { foodFacts } from '$lib/data/facts';
 	import { onMount } from 'svelte';
-	import { slide, fade } from 'svelte/transition';
 
 	const quickSearches = ['Matcha', 'Ramen', 'Croissant', 'Sushi', 'Tiramisu', 'Cold Brew'];
 
 	let fact = $state(foodFacts[0]);
-	let mounted = $state(false);
+	let displayedChars = $state<string[]>([]);
 
 	onMount(() => {
-		fact = foodFacts[Math.floor(Math.random() * foodFacts.length)];
-		mounted = true;
+		const selectedFact = foodFacts[Math.floor(Math.random() * foodFacts.length)];
+		fact = selectedFact;
+
+		const chars = selectedFact.text.split('');
+		let i = 0;
+		const interval = setInterval(() => {
+			if (i < chars.length) {
+				displayedChars = [...displayedChars, chars[i]];
+				i++;
+			} else {
+				clearInterval(interval);
+			}
+		}, 30);
+
+		return () => clearInterval(interval);
 	});
 </script>
 
@@ -20,17 +32,21 @@
 		<div class="grid gap-8 lg:grid-cols-[1.2fr_1fr]">
 			<!-- LEFT -->
 			<div class="flex flex-col justify-center">
-				<div
-					class="mb-8 inline-flex h-9 w-fit items-center gap-2 overflow-hidden rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm shadow-sm"
-				>
-					<Sparkles size={14} class="shrink-0 fill-violet-500 text-violet-500" />
-					{#if mounted}
-						<div in:slide={{ axis: 'x', duration: 800 }} class="overflow-hidden">
-							<span in:fade={{ duration: 400 }} class="whitespace-nowrap text-zinc-700">
-								{fact.text}
-							</span>
+				<div class="mb-8 min-h-9">
+					<div
+						class="inline-flex h-9 items-center rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm shadow-sm transition-all duration-300"
+						class:gap-2={displayedChars.length > 0}
+						aria-label="Food fact: {fact.text}"
+					>
+						<Sparkles size={14} class="shrink-0 fill-violet-500 text-violet-500" />
+						<div class="flex items-center" aria-hidden="true">
+							{#each displayedChars as char, idx (idx)}
+								<span class="char-anim inline-block text-zinc-700">
+									{char === ' ' ? '\u00A0' : char}
+								</span>
+							{/each}
 						</div>
-					{/if}
+					</div>
 				</div>
 
 				<h1
@@ -153,3 +169,20 @@
 		</div>
 	</div>
 </section>
+
+<style>
+	@keyframes clean-reveal {
+		from {
+			opacity: 0;
+			transform: translateY(4px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+	.char-anim {
+		opacity: 0;
+		animation: clean-reveal 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+	}
+</style>
