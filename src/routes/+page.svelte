@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Coffee, Heart } from '@lucide/svelte';
 	import { version } from '../../package.json';
 	import HeroSection from '$lib/components/home/HeroSection.svelte';
 </script>
@@ -30,8 +31,8 @@
 			class="mx-auto flex max-w-[1440px] flex-col items-center justify-between border-t border-zinc-100 pt-8 text-sm text-zinc-500 sm:flex-row"
 		>
 			<p class="flex items-center gap-1.5">
-				Crafted with <span class="text-amber-900">☕</span> and
-				<span class="text-violet-600">💜</span>
+				Crafted with <Coffee class="size-4 text-violet-600" /> and
+				<Heart class="size-4 fill-violet-600 text-violet-600" />
 			</p>
 			<div class="mt-2 font-mono text-[10px] tracking-wider text-zinc-400 uppercase sm:mt-0">
 				<a
