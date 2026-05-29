@@ -20,9 +20,14 @@ describe('foodFacts data', () => {
 });
 
 describe('getPersistentFact', () => {
-	it('should return a valid fact', () => {
-		const fact = getPersistentFact();
-		assert.ok(foodFacts.some((f) => f.text === fact.text));
+	it('should return a valid fact (or empty on SSR)', () => {
+		const { fact, isNew } = getPersistentFact();
+		if (typeof window === 'undefined') {
+			assert.strictEqual(fact.text, '');
+		} else {
+			assert.ok(foodFacts.some((f) => f.text === fact.text));
+		}
+		assert.strictEqual(typeof isNew, 'boolean');
 	});
 
 	it('should persist the same fact on the same day', () => {
@@ -43,10 +48,12 @@ describe('getPersistentFact', () => {
 		global.localStorage = mockLocalStorage;
 
 		try {
-			const fact1 = getPersistentFact();
-			const fact2 = getPersistentFact();
+			const { fact: fact1, isNew: isNew1 } = getPersistentFact();
+			const { fact: fact2, isNew: isNew2 } = getPersistentFact();
 
 			assert.strictEqual(fact1.text, fact2.text);
+			assert.strictEqual(isNew1, true);
+			assert.strictEqual(isNew2, false);
 			assert.ok(storage.has('munchbear_daily_fact'));
 
 			const stored = JSON.parse(storage.get('munchbear_daily_fact')!);

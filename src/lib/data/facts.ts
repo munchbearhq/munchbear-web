@@ -65,7 +65,7 @@ export const heroWords = [
 ];
 
 export function getPersistentFact() {
-	if (typeof window === 'undefined') return foodFacts[0];
+	if (typeof window === 'undefined') return { fact: { text: '' }, isNew: false };
 
 	const STORAGE_KEY = 'munchbear_daily_fact';
 	const today = new Date().toDateString();
@@ -76,7 +76,7 @@ export function getPersistentFact() {
 			const { fact, date } = JSON.parse(stored);
 			if (date === today) {
 				const factExists = foodFacts.find((f) => f.text === fact.text);
-				if (factExists) return factExists;
+				if (factExists) return { fact: factExists, isNew: false };
 			}
 		}
 	} catch {
@@ -90,5 +90,5 @@ export function getPersistentFact() {
 		// Ignore storage errors
 	}
 
-	return newFact;
+	return { fact: newFact, isNew: true };
 }
