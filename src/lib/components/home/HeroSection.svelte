@@ -1,36 +1,44 @@
 <script lang="ts">
 	import { Search, Sparkles, Star, Bookmark } from '@lucide/svelte';
-	import { foodFacts, heroWords, getPersistentFact } from '$lib/data/facts';
+	import { heroWords, getPersistentFact } from '$lib/data/facts';
 	import { onMount } from 'svelte';
 	import { fly } from 'svelte/transition';
 
 	const quickSearches = ['Matcha', 'Ramen', 'Croissant', 'Sushi', 'Tiramisu', 'Cold Brew'];
 
-	let fact = $state(foodFacts[0]);
-	let displayedChars = $state<string[]>([]);
+	const persistent = getPersistentFact();
+
+	let fact = $state(persistent.fact);
+	let shouldAnimate = $state(persistent.isNew);
+	let displayedChars = $state<string[]>(
+		!persistent.isNew && persistent.fact.text ? persistent.fact.text.split('') : []
+	);
 	let wordIndex = $state(0);
 
 	onMount(() => {
-		const selectedFact = getPersistentFact();
-		fact = selectedFact;
+		let factInterval: ReturnType<typeof setInterval> | undefined;
 
-		const chars = selectedFact.text.split('');
-		let i = 0;
-		const factInterval = setInterval(() => {
-			if (i < chars.length) {
-				displayedChars = [...displayedChars, chars[i]];
-				i++;
-			} else {
-				clearInterval(factInterval);
-			}
-		}, 30);
+		if (shouldAnimate) {
+			// Ensure we start from empty if we're animating
+			displayedChars = [];
+			const chars = fact.text.split('');
+			let i = 0;
+			factInterval = setInterval(() => {
+				if (i < chars.length) {
+					displayedChars = [...displayedChars, chars[i]];
+					i++;
+				} else {
+					clearInterval(factInterval);
+				}
+			}, 30);
+		}
 
 		const wordInterval = setInterval(() => {
 			wordIndex = (wordIndex + 1) % heroWords.length;
 		}, 2500);
 
 		return () => {
-			clearInterval(factInterval);
+			if (factInterval) clearInterval(factInterval);
 			clearInterval(wordInterval);
 		};
 	});
@@ -43,17 +51,41 @@
 			<div class="flex flex-col justify-center">
 				<div class="mb-8 min-h-9">
 					<div
+						id="fact-pill"
 						class="inline-flex h-9 items-center rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm shadow-sm transition-all duration-300"
 						class:gap-2={displayedChars.length > 0}
 						aria-label="Food fact: {fact.text}"
 					>
 						<Sparkles size={14} class="shrink-0 fill-violet-500 text-violet-500" />
 						<div class="flex items-center" aria-hidden="true">
-							{#each displayedChars as char, idx (idx)}
-								<span class="char-anim inline-block text-zinc-700">
-									{char === ' ' ? '\u00A0' : char}
-								</span>
-							{/each}
+							{#if !shouldAnimate}
+								<span id="fact-text-instant" class="inline-block text-zinc-700">{fact.text}</span>
+								<script>
+									(function () {
+										try {
+											const stored = localStorage.getItem('munchbear_daily_fact');
+											if (stored) {
+												const parsed = JSON.parse(stored);
+												if (parsed.date === new Date().toDateString()) {
+													const el = document.getElementById('fact-text-instant');
+													const pill = document.getElementById('fact-pill');
+													if (el && pill) {
+														el.textContent = parsed.fact.text;
+														pill.classList.add('gap-2');
+														pill.setAttribute('aria-label', 'Food fact: ' + parsed.fact.text);
+													}
+												}
+											}
+										} catch (e) {}
+									})();
+								</script>
+							{:else}
+								{#each displayedChars as char, idx (idx)}
+									<span class="char-anim inline-block text-zinc-700">
+										{char === ' ' ? '\u00A0' : char}
+									</span>
+								{/each}
+							{/if}
 						</div>
 					</div>
 				</div>
