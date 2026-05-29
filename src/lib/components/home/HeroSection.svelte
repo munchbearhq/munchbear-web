@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Search, Sparkles, Star, Bookmark } from '@lucide/svelte';
-	import { foodFacts, heroWords } from '$lib/data/facts';
+	import { foodFacts, heroWords, getPersistentFact } from '$lib/data/facts';
 	import { onMount } from 'svelte';
 	import { fly } from 'svelte/transition';
 
@@ -11,7 +11,7 @@
 	let wordIndex = $state(0);
 
 	onMount(() => {
-		const selectedFact = foodFacts[Math.floor(Math.random() * foodFacts.length)];
+		const selectedFact = getPersistentFact();
 		fact = selectedFact;
 
 		const chars = selectedFact.text.split('');

@@ -35,7 +35,20 @@ export const foodFacts = [
 	{ text: 'Japanese farmers grow square watermelons for easier storage' },
 	{ text: 'Pringles are technically "potato crisps," not chips' },
 	{ text: 'Broccoli is actually a cluster of unopened flower buds' },
-	{ text: 'The red food dye in many snacks comes from crushed bugs' }
+	{ text: 'The red food dye in many snacks comes from crushed bugs' },
+	{ text: "The first oranges weren't orange" },
+	{ text: 'There are over 7,500 varieties of apples' },
+	{ text: 'Avocados are berries' },
+	{ text: 'Honeybees must visit 2 million flowers to make one pound of honey' },
+	{ text: "The word 'apple' used to refer to any fruit" },
+	{ text: 'A cluster of bananas is called a hand, and a single banana is called a finger' },
+	{ text: 'Chocolate was once used as currency' },
+	{ text: 'The oldest evidence of soup dates back to 6,000 B.C.' },
+	{ text: 'Pineapples take about two years to grow' },
+	{ text: 'Fig wasps pollinate most figs' },
+	{ text: 'A watermelon is both a fruit and a vegetable' },
+	{ text: 'Peaches and nectarines are the same fruit' },
+	{ text: 'Coffee beans are actually seeds of a cherry-like fruit' }
 ];
 
 export const heroWords = [
@@ -50,3 +63,32 @@ export const heroWords = [
 	'waiting for',
 	'searching for'
 ];
+
+export function getPersistentFact() {
+	if (typeof window === 'undefined') return foodFacts[0];
+
+	const STORAGE_KEY = 'munchbear_daily_fact';
+	const today = new Date().toDateString();
+
+	try {
+		const stored = localStorage.getItem(STORAGE_KEY);
+		if (stored) {
+			const { fact, date } = JSON.parse(stored);
+			if (date === today) {
+				const factExists = foodFacts.find((f) => f.text === fact.text);
+				if (factExists) return factExists;
+			}
+		}
+	} catch {
+		// Fallback to random
+	}
+
+	const newFact = foodFacts[Math.floor(Math.random() * foodFacts.length)];
+	try {
+		localStorage.setItem(STORAGE_KEY, JSON.stringify({ fact: newFact, date: today }));
+	} catch {
+		// Ignore storage errors
+	}
+
+	return newFact;
+}
