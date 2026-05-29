@@ -15,7 +15,22 @@ describe('foodFacts data', () => {
 		foodFacts.forEach((fact) => {
 			assert.strictEqual(typeof fact.text, 'string');
 			assert.strictEqual(fact.text.length > 0, true);
+			if (fact.description) {
+				assert.strictEqual(typeof fact.description, 'string');
+				assert.strictEqual(fact.description.length > 0, true);
+			}
+			if (fact.sourceUrl) {
+				assert.strictEqual(typeof fact.sourceUrl, 'string');
+				assert.strictEqual(fact.sourceUrl.startsWith('http'), true);
+			}
 		});
+	});
+
+	it('should have some facts with descriptions and sourceUrls', () => {
+		const withDescription = foodFacts.filter((f) => f.description);
+		const withSource = foodFacts.filter((f) => f.sourceUrl);
+		assert.ok(withDescription.length >= 3);
+		assert.ok(withSource.length >= 3);
 	});
 });
 

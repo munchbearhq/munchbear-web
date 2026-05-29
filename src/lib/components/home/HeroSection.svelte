@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { Search, Sparkles, Star, Bookmark } from '@lucide/svelte';
+	import { Search, Sparkles, Star, Bookmark, ExternalLink, X } from '@lucide/svelte';
 	import { heroWords, getPersistentFact } from '$lib/data/facts';
 	import { onMount } from 'svelte';
-	import { fly } from 'svelte/transition';
+	import { fly, fade, scale } from 'svelte/transition';
 
 	const quickSearches = ['Matcha', 'Ramen', 'Croissant', 'Sushi', 'Tiramisu', 'Cold Brew'];
 
@@ -14,6 +14,7 @@
 		!persistent.isNew && persistent.fact.text ? persistent.fact.text.split('') : []
 	);
 	let wordIndex = $state(0);
+	let showDetail = $state(false);
 
 	onMount(() => {
 		let factInterval: ReturnType<typeof setInterval> | undefined;
@@ -42,6 +43,12 @@
 			clearInterval(wordInterval);
 		};
 	});
+
+	function toggleDetail() {
+		if (fact.description) {
+			showDetail = !showDetail;
+		}
+	}
 </script>
 
 <section class="relative overflow-hidden px-6 py-10 lg:px-10 lg:py-16">
@@ -49,12 +56,15 @@
 		<div class="grid gap-8 lg:grid-cols-[1.2fr_1fr]">
 			<!-- LEFT -->
 			<div class="flex flex-col justify-center">
-				<div class="mb-8 min-h-9">
-					<div
+				<div class="relative mb-8 min-h-9">
+					<button
 						id="fact-pill"
-						class="inline-flex h-9 items-center rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm shadow-sm transition-all duration-300"
+						class="inline-flex h-9 items-center rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm shadow-sm transition-all duration-300 {fact.description
+							? 'cursor-pointer hover:border-violet-200 hover:bg-violet-50/30'
+							: 'cursor-default'}"
 						class:gap-2={displayedChars.length > 0}
-						aria-label="Food fact: {fact.text}"
+						onclick={toggleDetail}
+						aria-label="Food fact: {fact.text}. {fact.description ? 'Click for more info.' : ''}"
 					>
 						<Sparkles size={14} class="shrink-0 fill-violet-500 text-violet-500" />
 						<div class="flex items-center" aria-hidden="true">
@@ -87,7 +97,50 @@
 								{/each}
 							{/if}
 						</div>
-					</div>
+					</button>
+
+					{#if showDetail && fact.description}
+						<div
+							class="fixed inset-0 z-50 flex items-center justify-center bg-black/20 p-6 backdrop-blur-[2px] lg:absolute lg:inset-auto lg:top-12 lg:left-0 lg:block lg:w-[320px] lg:bg-transparent lg:p-0 lg:backdrop-blur-none"
+							transition:fade={{ duration: 150 }}
+						>
+							<div
+								class="relative w-full rounded-2xl border border-zinc-200 bg-white p-5 shadow-2xl lg:shadow-xl"
+								transition:scale={{ start: 0.95, duration: 200 }}
+							>
+								<button
+									onclick={() => (showDetail = false)}
+									class="absolute top-3 right-3 text-zinc-400 hover:text-zinc-600"
+								>
+									<X size={16} />
+								</button>
+
+								<div class="mb-3 flex items-center gap-2 text-violet-600">
+									<Sparkles size={16} class="fill-violet-600" />
+									<span class="text-xs font-bold tracking-wider uppercase">Did you know?</span>
+								</div>
+
+								<p class="text-sm leading-relaxed text-zinc-600">
+									{fact.description}
+								</p>
+
+								{#if fact.sourceUrl}
+									<div class="mt-5 flex flex-col gap-2">
+										<p class="text-[11px] font-medium text-zinc-400">Want to dive deeper?</p>
+										<a
+											href={fact.sourceUrl}
+											target="_blank"
+											rel="noopener noreferrer external"
+											class="inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-zinc-800"
+										>
+											Learn more on the web
+											<ExternalLink size={14} />
+										</a>
+									</div>
+								{/if}
+							</div>
+						</div>
+					{/if}
 				</div>
 
 				<h1
