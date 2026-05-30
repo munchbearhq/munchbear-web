@@ -16,6 +16,7 @@
 	);
 	let wordIndex = $state(0);
 	let showDetail = $state(false);
+	let pillElement = $state<HTMLElement | null>(null);
 
 	onMount(() => {
 		let factInterval: ReturnType<typeof setInterval> | undefined;
