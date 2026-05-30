@@ -44,12 +44,15 @@
 		};
 	});
 
-	function toggleDetail() {
+	function toggleDetail(e?: MouseEvent) {
+		e?.stopPropagation();
 		if (fact.description) {
 			showDetail = !showDetail;
 		}
 	}
 </script>
+
+<svelte:window onclick={() => (showDetail = false)} />
 
 <section class="relative overflow-hidden px-6 py-10 lg:px-10 lg:py-16">
 	<div class="mx-auto max-w-[1440px]">
@@ -103,10 +106,14 @@
 						<div
 							class="fixed inset-0 z-50 flex items-center justify-center bg-black/20 p-6 backdrop-blur-[2px] lg:absolute lg:inset-auto lg:top-12 lg:left-0 lg:block lg:w-[320px] lg:bg-transparent lg:p-0 lg:backdrop-blur-none"
 							transition:fade={{ duration: 150 }}
+							onclick={() => (showDetail = false)}
+							role="presentation"
 						>
 							<div
 								class="relative w-full rounded-2xl border border-zinc-200 bg-white p-5 shadow-2xl lg:shadow-xl"
 								transition:scale={{ start: 0.95, duration: 200 }}
+								onclick={(e) => e.stopPropagation()}
+								role="presentation"
 							>
 								<button
 									onclick={() => (showDetail = false)}

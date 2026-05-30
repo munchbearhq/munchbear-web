@@ -16,7 +16,7 @@ export const foodFacts: FoodFact[] = [
 		description:
 			'Archaeologists have found edible honey in ancient Egyptian tombs that is over 3,000 years old. Its low moisture and high acidity keep it preserved.',
 		sourceUrl:
-			'https://www.smithsonianmag.com/science-nature/the-science-behind-honeys-eternal-shelf-life-12107901/'
+			'https://www.smithsonianmag.com/science-nature/the-science-behind-honeys-eternal-shelf-life-1218690/'
 	},
 	{
 		text: 'Apples float in water because they are 25% air',
