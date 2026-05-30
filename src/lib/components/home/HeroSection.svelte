@@ -61,6 +61,7 @@
 				<div class="relative mb-8 min-h-9">
 					<button
 						id="fact-pill"
+						bind:this={pillElement}
 						class="inline-flex h-9 items-center rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm shadow-sm transition-all duration-300 {fact.description
 							? 'cursor-pointer hover:border-violet-200 hover:bg-violet-50/30'
 							: 'cursor-default'}"
@@ -109,7 +110,7 @@
 							<div
 								class="relative w-full rounded-2xl border border-zinc-200 bg-white p-5 shadow-2xl lg:shadow-xl"
 								transition:scale={{ start: 0.95, duration: 200 }}
-								use:clickOutside={() => (showDetail = false)}
+								use:clickOutside={{ callback: () => (showDetail = false), exclude: pillElement }}
 							>
 								<button
 									onclick={() => (showDetail = false)}

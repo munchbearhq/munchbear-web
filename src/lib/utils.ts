@@ -12,9 +12,16 @@ export type WithoutChildren<T> = T extends { children?: any } ? Omit<T, 'childre
 export type WithoutChildrenOrChild<T> = WithoutChildren<WithoutChild<T>>;
 export type WithElementRef<T, U extends HTMLElement = HTMLElement> = T & { ref?: U | null };
 
-export function clickOutside(node: HTMLElement, callback: () => void) {
+export function clickOutside(
+	node: HTMLElement,
+	{ callback, exclude }: { callback: () => void; exclude?: HTMLElement | null }
+) {
 	const handleClick = (event: MouseEvent) => {
-		if (node && !node.contains(event.target as Node) && !event.defaultPrevented) {
+		const target = event.target as Node;
+		const isOutside = node && !node.contains(target);
+		const isNotExcluded = !exclude || !exclude.contains(target);
+
+		if (isOutside && isNotExcluded && !event.defaultPrevented) {
 			callback();
 		}
 	};
