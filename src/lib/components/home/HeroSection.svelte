@@ -3,6 +3,7 @@
 	import { heroWords, getPersistentFact } from '$lib/data/facts';
 	import { onMount } from 'svelte';
 	import { fly, fade, scale } from 'svelte/transition';
+	import { clickOutside } from '$lib/utils';
 
 	const quickSearches = ['Matcha', 'Ramen', 'Croissant', 'Sushi', 'Tiramisu', 'Cold Brew'];
 
@@ -15,6 +16,7 @@
 	);
 	let wordIndex = $state(0);
 	let showDetail = $state(false);
+	let pillElement = $state<HTMLElement | null>(null);
 
 	onMount(() => {
 		let factInterval: ReturnType<typeof setInterval> | undefined;
@@ -59,6 +61,7 @@
 				<div class="relative mb-8 min-h-9">
 					<button
 						id="fact-pill"
+						bind:this={pillElement}
 						class="inline-flex h-9 items-center rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm shadow-sm transition-all duration-300 {fact.description
 							? 'cursor-pointer hover:border-violet-200 hover:bg-violet-50/30'
 							: 'cursor-default'}"
@@ -107,6 +110,7 @@
 							<div
 								class="relative w-full rounded-2xl border border-zinc-200 bg-white p-5 shadow-2xl lg:shadow-xl"
 								transition:scale={{ start: 0.95, duration: 200 }}
+								use:clickOutside={{ callback: () => (showDetail = false), exclude: pillElement }}
 							>
 								<button
 									onclick={() => (showDetail = false)}
