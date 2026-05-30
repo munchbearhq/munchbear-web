@@ -27,6 +27,7 @@
 			const chars = fact.text.split('');
 			let i = 0;
 			factInterval = setInterval(() => {
+				if (document.hidden) return;
 				if (i < chars.length) {
 					displayedChars = [...displayedChars, chars[i]];
 					i++;
@@ -37,6 +38,7 @@
 		}
 
 		const wordInterval = setInterval(() => {
+			if (document.hidden) return;
 			wordIndex = (wordIndex + 1) % heroWords.length;
 		}, 2500);
 
