@@ -1,7 +1,30 @@
-export const foodFacts = [
-	{ text: 'Ketchup was sold as medicine in the 1830s' },
-	{ text: 'Honey is the only food that never expires' },
-	{ text: 'Apples float in water because they are 25% air' },
+export interface FoodFact {
+	text: string;
+	description?: string;
+	sourceUrl?: string;
+}
+
+export const foodFacts: FoodFact[] = [
+	{
+		text: 'Ketchup was sold as medicine in the 1830s',
+		description:
+			'In 1834, Dr. John Cook Bennett promoted ketchup as a cure for indigestion and diarrhea. It was even sold in pill form before becoming a condiment.',
+		sourceUrl: 'https://www.tastingtable.com/1361730/ketchup-sold-as-medicine-1830s/'
+	},
+	{
+		text: 'Honey is the only food that never expires',
+		description:
+			'Archaeologists have found edible honey in ancient Egyptian tombs that is over 3,000 years old. Its low moisture and high acidity keep it preserved.',
+		sourceUrl:
+			'https://www.smithsonianmag.com/science-nature/the-science-behind-honeys-eternal-shelf-life-12107901/'
+	},
+	{
+		text: 'Apples float in water because they are 25% air',
+		description:
+			'The low density of an apple is caused by millions of tiny air pockets trapped between its cells, providing enough buoyancy to keep it afloat.',
+		sourceUrl: 'https://www.bestfoodfacts.org/question/why-can-apples-float/'
+	}
+	/*
 	{ text: 'Carrots were originally purple, not orange' },
 	{ text: "White chocolate isn't technically chocolate" },
 	{ text: "The world's most expensive pizza costs $12,000" },
@@ -99,6 +122,7 @@ export const foodFacts = [
 	{ text: 'Pink Himalayan salt gets its color from trace amounts of iron oxide' },
 	{ text: 'Quinoa is a seed and a relative of spinach and beets, not a grain' },
 	{ text: 'Eggplants are technically berries, while raspberries and blackberries are not' }
+	*/
 ];
 
 export const heroWords = [
@@ -114,7 +138,7 @@ export const heroWords = [
 	'searching for'
 ];
 
-export function getPersistentFact() {
+export function getPersistentFact(): { fact: FoodFact; isNew: boolean } {
 	if (typeof window === 'undefined') return { fact: { text: '' }, isNew: false };
 
 	const STORAGE_KEY = 'munchbear_daily_fact';
