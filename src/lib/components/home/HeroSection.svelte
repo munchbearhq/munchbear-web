@@ -3,6 +3,7 @@
 	import { heroWords, getPersistentFact } from '$lib/data/facts';
 	import { onMount } from 'svelte';
 	import { fly, fade, scale } from 'svelte/transition';
+	import { clickOutside } from '$lib/utils';
 
 	const quickSearches = ['Matcha', 'Ramen', 'Croissant', 'Sushi', 'Tiramisu', 'Cold Brew'];
 
@@ -103,14 +104,11 @@
 						<div
 							class="fixed inset-0 z-50 flex items-center justify-center bg-black/20 p-6 backdrop-blur-[2px] lg:absolute lg:inset-auto lg:top-12 lg:left-0 lg:block lg:w-[320px] lg:bg-transparent lg:p-0 lg:backdrop-blur-none"
 							transition:fade={{ duration: 150 }}
-							onclick={() => (showDetail = false)}
-							role="presentation"
 						>
 							<div
 								class="relative w-full rounded-2xl border border-zinc-200 bg-white p-5 shadow-2xl lg:shadow-xl"
 								transition:scale={{ start: 0.95, duration: 200 }}
-								onclick={(e) => e.stopPropagation()}
-								role="presentation"
+								use:clickOutside={() => (showDetail = false)}
 							>
 								<button
 									onclick={() => (showDetail = false)}
@@ -277,7 +275,6 @@
 		</div>
 	</div>
 </section>
-e>
 
 <style>
 	@keyframes clean-reveal {
