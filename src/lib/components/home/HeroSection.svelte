@@ -45,7 +45,8 @@
 		};
 	});
 
-	function toggleDetail() {
+	function toggleDetail(e: MouseEvent) {
+		e.stopPropagation();
 		if (fact.description) {
 			showDetail = !showDetail;
 		}
