@@ -46,8 +46,7 @@
 		};
 	});
 
-	function toggleDetail(e: MouseEvent) {
-		e.stopPropagation();
+	function toggleDetail() {
 		if (fact.description) {
 			showDetail = !showDetail;
 		}
