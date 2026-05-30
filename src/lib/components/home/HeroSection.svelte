@@ -44,15 +44,12 @@
 		};
 	});
 
-	function toggleDetail(e?: MouseEvent) {
-		e?.stopPropagation();
+	function toggleDetail() {
 		if (fact.description) {
 			showDetail = !showDetail;
 		}
 	}
 </script>
-
-<svelte:window onclick={() => (showDetail = false)} />
 
 <section class="relative overflow-hidden px-6 py-10 lg:px-10 lg:py-16">
 	<div class="mx-auto max-w-[1440px]">
@@ -280,6 +277,7 @@
 		</div>
 	</div>
 </section>
+e>
 
 <style>
 	@keyframes clean-reveal {
