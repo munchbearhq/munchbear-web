@@ -46,7 +46,7 @@ def validate():
     to_replace = []
     
     print(f"Checking {len(matches)} facts. {len(validated_urls)} already validated.")
-    print("Type 'y' for valid, 'n' for invalid (will be commented out), or 'q' to save and quit.")
+    print("Type 'y' for valid, 'n' for invalid (will be commented out), 'b' for bad fact (with reason), or 'q' to save and quit.")
 
     for match in matches:
         obj_str = match.group(0)
@@ -71,8 +71,8 @@ def validate():
             print(f"Could not open browser: {e}")
 
         while True:
-            resp = input("Is this a valid and good source? (y/n/q): ").lower()
-            if resp in ['y', 'n', 'q']:
+            resp = input("Is this a valid and good source? (y/n/b/q): ").lower()
+            if resp in ['y', 'n', 'b', 'q']:
                 break
         
         if resp == 'q':
@@ -81,13 +81,30 @@ def validate():
         if resp == 'y':
             save_validated(url)
             validated_urls.add(url)
+        
+        if resp == 'b':
+            wrong_entirely = input("Is this fact entirely wrong? (y/n): ").lower() == 'y'
+            
+            if wrong_entirely:
+                # Remove the fact object by replacing with empty string
+                to_replace.append((obj_str, ""))
+            else:
+                reason = input("What is the mistake? ")
+                # Comment out the fact object with mistake reason
+                inner_content = obj_str.strip()
+                if inner_content.endswith(','):
+                    inner_content = inner_content[:-1]
+                
+                commented = f"\t/* MISTAKE: {reason}\n\t{inner_content},\n\t*/"
+                to_replace.append((obj_str, commented))
+        
         if resp == 'n':
-            # Comment out the fact object
+            # Comment out the fact object for invalid source
             inner_content = obj_str.strip()
             if inner_content.endswith(','):
                 inner_content = inner_content[:-1]
 
-            commented = f"\t/*\n\t{inner_content},\n\t*/"
+            commented = f"\t/* INVALID SOURCE\n\t{inner_content},\n\t*/"
             to_replace.append((obj_str, commented))
 
 
