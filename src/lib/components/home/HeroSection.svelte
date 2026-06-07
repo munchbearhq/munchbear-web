@@ -171,8 +171,8 @@
 				</h1>
 
 				<p class="mt-6 ml-1 max-w-lg text-lg leading-8 text-zinc-600">
-					Discover exceptional dishes, top-rated restaurants, and unforgettable drinks from around
-					the world.
+					The global database for exceptional dishes, top-rated restaurants, and unforgettable
+					drinks.
 				</p>
 
 				<!-- Search -->
@@ -185,7 +185,7 @@
 
 					<input
 						type="text"
-						placeholder="What are you craving today?"
+						placeholder="Search dishes, restaurants, cuisines, or drinks."
 						class="h-16 flex-1 border-none bg-transparent px-4 text-lg outline-none placeholder:text-zinc-400"
 					/>
 
