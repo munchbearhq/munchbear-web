@@ -170,8 +170,9 @@
 					</span>
 				</h1>
 
-				<p class="mt-6 max-w-xl text-lg leading-8 text-zinc-600">
-					Curated gems, iconic classics, neighborhood favorites, and unforgettable drinks.
+				<p class="mt-6 ml-1 max-w-lg text-lg leading-8 text-zinc-600">
+					Discover exceptional dishes, top-rated restaurants, and unforgettable drinks from around
+					the world.
 				</p>
 
 				<!-- Search -->
